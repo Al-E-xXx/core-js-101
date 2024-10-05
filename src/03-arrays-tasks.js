@@ -650,8 +650,6 @@ function swapHeadAndTail(arr) {
   // throw new Error('Not implemented');
 }
 
-console.log(swapHeadAndTail([1, 2, 3, 4, 5]));
-
 module.exports = {
   findElement,
   generateOdds,
