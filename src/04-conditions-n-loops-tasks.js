@@ -439,19 +439,21 @@ function toNaryString(num, n) {
  *   ['/web/assets/style.css', '/.bin/mocha',  '/read.me'] => '/'
  *   ['/web/favicon.ico', '/web-scripts/dump', '/verbalizer/logs'] => '/'
  */
-function getCommonDirectoryPath(/* pathes */) {
-  // let commonPath = pathes[0];
-  // for (let i = 1; i < pathes.length; i += i) {
-  //   while (pathes[i].indexOf(commonPath) !== 0) {
-  //     commonPath = commonPath.substring(0, commonPath.lastIndexOf('/'));
-  //   }
-  // }
-  // return `${commonPath}/`;
+function getCommonDirectoryPath(pathes) {
+  if (pathes.length === 0) return '';
 
+  const splitPaths = pathes.map((path) => path.split('/'));
 
-  throw new Error('Not implemented');
+  let commonPath = splitPaths[0];
+
+  for (let i = 1; i < splitPaths.length; i += 1) {
+    commonPath = commonPath.filter((dir, idx) => dir === splitPaths[i][idx]);
+  }
+
+  return commonPath.length > 0 ? `${commonPath.join('/')}/` : '';
+
+  // throw new Error('Not implemented');
 }
-
 
 /**
  * Returns the product of two specified matrixes.
@@ -471,8 +473,26 @@ function getCommonDirectoryPath(/* pathes */) {
  *                         [ 6 ]]
  *
  */
-function getMatrixProduct(/* m1, m2 */) {
-  throw new Error('Not implemented');
+function getMatrixProduct(m1, m2) {
+  const rowsM1 = m1.length;
+  const colsM1 = m1[0].length;
+  const rowsM2 = m2.length;
+  const colsM2 = m2[0].length;
+
+  if (colsM1 !== rowsM2) throw new Error('Matrices cannot be multiplied');
+
+  const result = Array.from({ length: rowsM1 }, () => Array(colsM2).fill(0));
+
+  for (let i = 0; i < rowsM1; i += 1) {
+    for (let j = 0; j < colsM2; j += 1) {
+      for (let k = 0; k < colsM1; k += 1) {
+        result[i][j] += m1[i][k] * m2[k][j];
+      }
+    }
+  }
+
+  return result;
+  // throw new Error('Not implemented');
 }
 
 
@@ -506,8 +526,33 @@ function getMatrixProduct(/* m1, m2 */) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
+function evaluateTicTacToePosition(position) {
+  const lines = [
+    // Rows
+    [position[0][0], position[0][1], position[0][2]],
+    [position[1][0], position[1][1], position[1][2]],
+    [position[2][0], position[2][1], position[2][2]],
+
+    // Columns
+    [position[0][0], position[1][0], position[2][0]],
+    [position[0][1], position[1][1], position[2][1]],
+    [position[0][2], position[1][2], position[2][2]],
+
+    // Diagonals
+    [position[0][0], position[1][1], position[2][2]],
+    [position[0][2], position[1][1], position[2][0]],
+  ];
+
+
+  for (let i = 0; i < lines.length; i += 1) {
+    const line = lines[i];
+    if (line[0] && line[0] === line[1] && line[0] === line[2]) {
+      return line[0];
+    }
+  }
+
+  return undefined;
+  // throw new Error('Not implemented');
 }
 
 
